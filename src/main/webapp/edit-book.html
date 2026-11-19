@@ -3,43 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Book Listing — Book4u</title>
+    <title>Edit Volume Listing — Book4u</title>
     <meta name="description" content="Update details of your listed academic textbook.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+    <!-- Editorial Design System -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Navigation Header -->
+    <!-- Editorial Navigation Header -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="brand-link">
-                <div class="brand-logo-icon">📚</div>
-                <div class="brand-details">
-                    <h1>Book4u</h1>
-                    <p>Student Peer-to-Peer Book Exchange</p>
-                </div>
+            <a href="index.html" class="brand-link" aria-label="Book4u Home">
+                <div class="brand-wordmark">Book<span>4u</span></div>
+                <div class="brand-label">Academic Exchange</div>
             </a>
 
+            <nav class="nav-menu" aria-label="Primary Navigation">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="explore.html">Explore Books</a></li>
+                <li class="nav-item active"><a href="my-books.html">My Listed Volumes</a></li>
+                <li class="nav-item"><a href="profile.html">Student Profile</a></li>
+            </nav>
+
             <div class="nav-actions">
-                <div id="system-health-pill" class="health-pill" title="Servlet & MySQL Health Status">
+                <div id="system-health-pill" class="health-pill" title="Tomcat & MySQL Health Status">
                     <span id="health-dot" class="health-dot dot-amber"></span>
                     <span id="health-text">Checking System...</span>
                 </div>
 
                 <a href="explore.html" class="btn btn-outline btn-sm">Explore</a>
                 <a href="my-books.html" class="btn btn-outline btn-sm">My Books</a>
-                <a href="login.html" class="btn btn-outline btn-sm guest-auth-btn">Sign In</a>
-                <a href="register.html" class="btn btn-primary btn-sm guest-auth-btn">Register</a>
+                <a href="login.html" class="btn btn-ghost btn-sm guest-auth-btn">Sign In</a>
+                <a href="register.html" class="btn btn-outline btn-sm guest-auth-btn">Register</a>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="auth-wrapper" style="max-width: 680px;">
+        <div class="auth-wrapper" style="max-width: 720px;">
             <div class="auth-card">
                 <div class="auth-header">
-                    <span class="auth-icon">✏️</span>
+                    <div class="editorial-tag" style="color: var(--color-forest); margin-bottom: 0.5rem;">CUSTODIAN AMENDMENT</div>
                     <h2>Edit Textbook Listing</h2>
                     <p>Update condition, availability status, or sharing preferences</p>
                 </div>
@@ -68,14 +77,14 @@
                         <div class="form-group">
                             <label for="edit-subject">Subject Area *</label>
                             <select id="edit-subject" class="form-control" required>
-                                <option value="Java">Java & Object-Oriented</option>
+                                <option value="Java">Java &amp; Object-Oriented</option>
                                 <option value="DBMS">Database Management (DBMS)</option>
-                                <option value="DSA">Data Structures & Algorithms</option>
+                                <option value="DSA">Data Structures &amp; Algorithms</option>
                                 <option value="Networks">Computer Networks</option>
                                 <option value="Operating Systems">Operating Systems</option>
-                                <option value="Mathematics">Mathematics & Discrete Math</option>
-                                <option value="Electronics">Electronics & Circuits</option>
-                                <option value="Machine Learning">Machine Learning & AI</option>
+                                <option value="Mathematics">Mathematics &amp; Discrete Math</option>
+                                <option value="Electronics">Electronics &amp; Circuits</option>
+                                <option value="Machine Learning">Machine Learning &amp; AI</option>
                                 <option value="Mechanical">Mechanical Engineering</option>
                                 <option value="Civil">Civil Engineering</option>
                                 <option value="Other">Other Academic Subject</option>
@@ -110,10 +119,10 @@
                         </div>
                     </div>
 
-                    <!-- Sharing Mode & ISBN -->
+                    <!-- Sharing Mode & Edition -->
                     <div class="form-grid-2">
                         <div class="form-group">
-                            <label for="edit-mode">Sharing Mode *</label>
+                            <label for="edit-mode">Sharing Protocol *</label>
                             <select id="edit-mode" class="form-control" required>
                                 <option value="SWAP">SWAP (Exchange)</option>
                                 <option value="GIVEAWAY">GIVEAWAY (Free)</option>
@@ -135,7 +144,7 @@
 
                     <!-- Swap Preferences -->
                     <div class="form-group">
-                        <label for="edit-swap">Swap Preferences (If swapping)</label>
+                        <label for="edit-swap">Trade Preferences (If swapping)</label>
                         <input type="text" id="edit-swap" class="form-control">
                     </div>
 
@@ -154,12 +163,12 @@
 
                     <!-- Description -->
                     <div class="form-group">
-                        <label for="edit-desc">Description & Syllabus Notes</label>
+                        <label for="edit-desc">Syllabus Notes &amp; Custodian Remarks</label>
                         <textarea id="edit-desc" class="form-control" rows="3"></textarea>
                     </div>
 
-                    <!-- Buttons -->
-                    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                    <!-- Action Buttons -->
+                    <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.75rem;">
                         <a href="my-books.html" class="btn btn-outline">Cancel</a>
                         <button type="submit" id="btn-save-edit" class="btn btn-primary" style="padding: 0.75rem 2rem;">
                             Save Changes
@@ -170,18 +179,50 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Editorial Colophon / Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <div>
-                <p><strong>Student Peer-to-Peer Book Exchange System (Book4u)</strong></p>
-                <p style="font-size: 0.85rem; color: #64748b;">Phase 3: Book Management & Discovery</p>
+            <div class="footer-brand">
+                <h4>Book4u</h4>
+                <p>An independent peer-to-peer student book exchange system built to liberate academic textbooks, eliminate retail markups, and foster scholarly solidarity across campus.</p>
             </div>
+
+            <div class="footer-col">
+                <h5>Navigation</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="explore.html">Explore Catalog</a></li>
+                    <li><a href="my-books.html">My Listed Volumes</a></li>
+                    <li><a href="profile.html">Student Profile</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Protocols</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#editorial">The Mission</a></li>
+                    <li><a href="index.html#categories">Subject Index</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Campus Access</h5>
+                <ul class="footer-links">
+                    <li><a href="login.html">Sign In</a></li>
+                    <li><a href="register.html">Student Register</a></li>
+                    <li><a href="add-book.html">List a Textbook</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>&copy; 2026 Book4u — Academic Edition. All peer exchanges are non-commercial.</div>
             <div class="footer-tech-stack">
-                <span class="tag">Java 21</span>
-                <span class="tag">Jakarta Servlet 6.0</span>
-                <span class="tag">JDBC</span>
-                <span class="tag">MySQL 8</span>
+                <span class="tech-tag">Java 21</span>
+                <span class="tech-tag">Jakarta Servlet 6.0</span>
+                <span class="tech-tag">JDBC</span>
+                <span class="tech-tag">MySQL 8</span>
             </div>
         </div>
     </footer>

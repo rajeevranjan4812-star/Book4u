@@ -1,26 +1,25 @@
 /**
  * ============================================================================
- * Student Peer-to-Peer Book Exchange System - Frontend Client Application
- * Technology: Vanilla JavaScript (ES6+), Fetch API, DOM Manipulation
+ * Book4u - Client Application Controller
+ * Technology: Vanilla JavaScript (ES6+), Fetch API, DOM API
  * Integrates directly with Java Servlets (/api/health, /api/books)
  * ============================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize components
     checkSystemHealth();
     loadAvailableBooks();
     setupEventListeners();
 });
 
 /**
- * Pings the Java Servlet health check endpoint: GET /api/health
+ * Pings the Java Servlet health check endpoint: GET api/health
  * Tests Tomcat container status and live MySQL JDBC connectivity.
  */
 async function checkSystemHealth() {
-    const healthPill = document.getElementById('system-health-pill');
     const healthText = document.getElementById('health-text');
     const healthDot = document.getElementById('health-dot');
+    if (!healthText || !healthDot) return;
 
     try {
         const response = await fetch('api/health');
@@ -31,7 +30,7 @@ async function checkSystemHealth() {
                 healthText.textContent = 'Tomcat & MySQL: Online';
             } else {
                 healthDot.className = 'health-dot dot-amber';
-                healthText.textContent = 'Server: Up | DB: Awaiting Connection';
+                healthText.textContent = 'Server: Up | DB: Awaiting Sync';
             }
         } else {
             healthDot.className = 'health-dot dot-amber';
@@ -39,16 +38,18 @@ async function checkSystemHealth() {
         }
     } catch (err) {
         healthDot.className = 'health-dot dot-amber';
-        healthText.textContent = 'Server Offline (Deploy to Tomcat)';
+        healthText.textContent = 'Server: Offline (Deploy to Tomcat)';
     }
 }
 
 /**
- * Fetches available books from GET /api/books and renders them on the page.
+ * Fetches available books from GET api/books and renders them on the page.
  */
 async function loadAvailableBooks(subject = '', mode = '') {
     const grid = document.getElementById('book-grid');
-    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Loading campus books...</p>';
+    if (!grid) return;
+
+    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--color-ink-muted); padding: 3rem 0; font-family: var(--font-mono); font-size: 0.85rem;">[ ACCESSING CAMPUS REPOSITORY... ]</p>';
 
     let url = 'api/books';
     const params = new URLSearchParams();
@@ -66,79 +67,143 @@ async function loadAvailableBooks(subject = '', mode = '') {
         const books = Array.isArray(res) ? res : (res.books || []);
         renderBookCards(books);
 
+        // Update live database count on community ledger
+        const statEl = document.getElementById('stat-books-count');
+        if (statEl) {
+            statEl.textContent = books.length;
+        }
+
     } catch (err) {
         grid.innerHTML = `
-            <div style="grid-column: 1/-1; background-color: #fffbeb; border: 1px solid #fde68a; padding: 1.5rem; border-radius: 12px; text-align: center;">
-                <p style="color: #92400e; font-weight: 600; margin-bottom: 0.5rem;">Preview Mode (API endpoint unreachable)</p>
-                <p style="color: #78350f; font-size: 0.9rem;">To connect live to Servlets and MySQL, package the project with <code>mvn package</code> and deploy <code>target/Book4u.war</code> into Tomcat's <code>webapps/</code> folder.</p>
+            <div style="grid-column: 1/-1; background-color: var(--color-paper-light); border: 1px solid var(--color-grey); padding: 2.5rem; text-align: center; border-radius: var(--radius-sm);">
+                <p style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--color-ink); margin-bottom: 0.5rem;">Preview Mode (API endpoint unreachable)</p>
+                <p style="color: var(--color-ink-muted); font-size: 0.9rem; max-width: 50ch; margin: 0 auto;">To connect live to Jakarta Servlets and MySQL, package the project with <code>mvn package</code> and run the local Tomcat server.</p>
             </div>
         `;
     }
 }
 
 /**
- * Generates DOM cards for books.
+ * Generates editorial Card Story book cards.
  */
 function renderBookCards(books) {
     const grid = document.getElementById('book-grid');
+    if (!grid) return;
+
     if (!books || books.length === 0) {
-        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No books currently match this filter.</p>';
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--color-ink-muted); padding: 3rem; font-style: italic;">No academic volumes currently match this filter criteria.</p>';
         return;
     }
 
     grid.innerHTML = '';
-    books.forEach(book => {
-        const card = document.createElement('div');
+    books.forEach((book, index) => {
+        const card = document.createElement('article');
         card.className = 'book-card';
 
+        // Select an editorial jacket color theme based on subject
+        let themeClass = 'jacket-theme-cs';
+        const subj = (book.subject || '').toLowerCase();
+        if (subj.includes('db') || subj.includes('sql') || subj.includes('data')) {
+            themeClass = 'jacket-theme-dbms';
+        } else if (subj.includes('algo') || subj.includes('dsa') || subj.includes('structure')) {
+            themeClass = 'jacket-theme-algo';
+        } else if (subj.includes('math') || subj.includes('physics') || subj.includes('discrete')) {
+            themeClass = 'jacket-theme-math';
+        }
+
+        // Sharing mode badge styling
         let badgeClass = 'badge-swap';
         if (book.sharingMode === 'GIVEAWAY') badgeClass = 'badge-giveaway';
         if (book.sharingMode === 'LENDING') badgeClass = 'badge-lending';
 
         let lendingInfo = '';
         if (book.sharingMode === 'LENDING' && book.lendingMaxDurationDays) {
-            lendingInfo = `<div><strong>Max Duration:</strong> ${book.lendingMaxDurationDays} Days</div>`;
+            lendingInfo = `<div class="book-meta-row"><span class="book-meta-label">Max Loan:</span> <span class="book-meta-value">${book.lendingMaxDurationDays} Days</span></div>`;
         }
 
         let swapPref = '';
         if (book.sharingMode === 'SWAP' && book.swapPreferences) {
-            swapPref = `<div><strong>Looking for:</strong> ${escapeHtml(book.swapPreferences)}</div>`;
+            swapPref = `<div class="book-meta-row"><span class="book-meta-label">Trade for:</span> <span class="book-meta-value">${escapeHtml(book.swapPreferences)}</span></div>`;
         }
 
+        let conditionLabel = book.conditionGrade || 'GOOD';
+        if (conditionLabel === 'LIKE_NEW') conditionLabel = 'Like New';
+
+        // Check if a real cover image URL is available
+        const hasCover = book.coverImageUrl && book.coverImageUrl.trim() !== '' && !book.coverImageUrl.includes('placeholder');
+        const jacketStyle = hasCover ? `background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('${escapeHtml(book.coverImageUrl)}');` : '';
+
         card.innerHTML = `
-            <div class="book-card-top">
-                <span class="mode-badge ${badgeClass}">${book.sharingMode}</span>
-                <span class="book-subject-pill">${escapeHtml(book.subject || 'General')}</span>
+            <div class="book-jacket-plate ${themeClass}" style="${jacketStyle}">
+                <div class="book-jacket-subject-tag">${escapeHtml(book.subject || 'Academic Volume')}</div>
+                <div>
+                    <h4 class="book-jacket-title">${escapeHtml(book.title)}</h4>
+                    <p class="book-jacket-author">${escapeHtml(book.author)}</p>
+                </div>
             </div>
-            <h4 class="book-title">${escapeHtml(book.title)}</h4>
-            <p class="book-author">by ${escapeHtml(book.author)}</p>
-            <div class="book-meta">
-                <div><strong>Course:</strong> ${escapeHtml(book.courseCode || 'N/A')}</div>
-                ${lendingInfo}
-                ${swapPref}
+
+            <div class="book-card-body">
+                <div class="book-card-top">
+                    <span class="mode-badge ${badgeClass}">${escapeHtml(book.sharingMode || 'SWAP')}</span>
+                    <span class="book-subject-pill">${escapeHtml(conditionLabel)}</span>
+                </div>
+
+                <h3 class="book-title" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</h3>
+                <p class="book-author">by ${escapeHtml(book.author)}</p>
+
+                <div class="book-meta">
+                    <div class="book-meta-row">
+                        <span class="book-meta-label">Course:</span>
+                        <span class="book-meta-value">${escapeHtml(book.courseCode || 'N/A')}</span>
+                    </div>
+                    ${lendingInfo}
+                    ${swapPref}
+                </div>
+
+                <p class="book-desc">${escapeHtml(book.description || 'Verified academic syllabus copy in student custody.')}</p>
             </div>
-            <p class="book-desc">${escapeHtml(book.description || 'No description provided.')}</p>
+
             <div class="book-footer">
-                <span class="owner-info">Owner: <strong>${escapeHtml(book.ownerName || 'Campus Student')}</strong></span>
-                <a href="book-details.html?id=${book.id}" class="btn btn-outline btn-sm">Details</a>
+                <span class="owner-info">Custodian: <strong>${escapeHtml(book.ownerName || 'Campus Student')}</strong></span>
+                <a href="book-details.html?id=${book.id}" class="btn btn-outline btn-sm">Inspect &rarr;</a>
             </div>
         `;
         grid.appendChild(card);
     });
 }
 
-function handleRequest(bookId, mode) {
-    alert(`Requesting book #${bookId} in ${mode} mode.\nThis triggers exchange negotiation between students on campus.`);
+/**
+ * Filter by pill click on landing page.
+ */
+function filterByPill(subject) {
+    const subjectSelect = document.getElementById('filter-subject');
+    const modeSelect = document.getElementById('filter-mode');
+
+    // Update active pill button
+    const pills = document.querySelectorAll('.filter-pill');
+    pills.forEach(p => {
+        if (p.textContent.includes(subject) || (subject === '' && p.textContent.includes('All'))) {
+            p.classList.add('active');
+        } else {
+            p.classList.remove('active');
+        }
+    });
+
+    if (subjectSelect) {
+        subjectSelect.value = subject;
+    }
+
+    loadAvailableBooks(subject, modeSelect ? modeSelect.value : '');
 }
 
 function setupEventListeners() {
-    // Filter by subject
+    // Filter dropdowns
     const subjectFilter = document.getElementById('filter-subject');
     const modeFilter = document.getElementById('filter-mode');
 
     const applyFilters = () => {
-        const subject = subjectFilter.value;
-        const mode = modeFilter.value;
+        const subject = subjectFilter ? subjectFilter.value : '';
+        const mode = modeFilter ? modeFilter.value : '';
         loadAvailableBooks(subject, mode);
     };
 
@@ -151,15 +216,24 @@ function setupEventListeners() {
     const closeModalBtn = document.getElementById('btn-close-modal');
     const newBookForm = document.getElementById('new-book-form');
 
-    if (openModalBtn) {
+    if (openModalBtn && listModal) {
         openModalBtn.addEventListener('click', () => {
             listModal.classList.add('active');
         });
     }
 
-    if (closeModalBtn) {
+    if (closeModalBtn && listModal) {
         closeModalBtn.addEventListener('click', () => {
             listModal.classList.remove('active');
+        });
+    }
+
+    // Close on background backdrop click
+    if (listModal) {
+        listModal.addEventListener('click', (e) => {
+            if (e.target === listModal) {
+                listModal.classList.remove('active');
+            }
         });
     }
 
@@ -176,7 +250,7 @@ function setupEventListeners() {
         });
     }
 
-    // Submit new book form to POST /api/books
+    // Submit new book form to POST api/books
     if (newBookForm) {
         newBookForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -207,9 +281,9 @@ function setupEventListeners() {
                     return;
                 }
                 if (response.ok) {
-                    alert('Success! Your book listing has been added to the campus catalog.');
+                    alert('Success! Your book has been added to the campus repository.');
                     newBookForm.reset();
-                    listModal.classList.remove('active');
+                    if (listModal) listModal.classList.remove('active');
                     loadAvailableBooks();
                 } else {
                     alert('Error: ' + (result.error || 'Failed to list book'));

@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Sign In — Book4u</title>
     <meta name="description" content="Sign in to your Book4u student account for peer-to-peer textbook sharing.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+    <!-- Editorial Design System -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Navigation Header -->
+    <!-- Editorial Navigation Header -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="brand-link">
-                <div class="brand-logo-icon">📚</div>
-                <div class="brand-details">
-                    <h1>Book4u</h1>
-                    <p>Student Peer-to-Peer Book Exchange</p>
-                </div>
+            <a href="index.html" class="brand-link" aria-label="Book4u Home">
+                <div class="brand-wordmark">Book<span>4u</span></div>
+                <div class="brand-label">Academic Exchange</div>
             </a>
 
             <div class="nav-actions">
@@ -29,10 +31,10 @@
 
     <!-- Sign In Container -->
     <main class="main-content">
-        <div class="auth-wrapper" style="max-width: 460px;">
+        <div class="auth-wrapper" style="max-width: 480px;">
             <div class="auth-card">
                 <div class="auth-header">
-                    <span class="auth-icon">🔐</span>
+                    <div class="editorial-tag" style="color: var(--color-forest); margin-bottom: 0.5rem;">CAMPUS PORTAL</div>
                     <h2>Student Sign In</h2>
                     <p>Access your book listings and campus exchange requests</p>
                 </div>
@@ -57,10 +59,10 @@
                     </div>
 
                     <!-- Demo Credentials Helper -->
-                    <div style="background: #f8fafc; border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.8rem; color: var(--text-muted);">
-                        <strong>Academic Demo Login:</strong><br>
-                        Email: <code>aarav.sharma@campus.edu</code><br>
-                        Password: <code>Password@123</code>
+                    <div style="background-color: var(--color-paper-light); border: 1px dashed var(--color-grey); border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--color-ink-muted);">
+                        <strong style="color: var(--color-forest); font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.25rem;">Academic Demo Login:</strong>
+                        Email: <code style="font-family: var(--font-mono); color: var(--color-ink);">aarav.sharma@campus.edu</code><br>
+                        Password: <code style="font-family: var(--font-mono); color: var(--color-ink);">Password@123</code>
                     </div>
 
                     <!-- Submit Button -->
@@ -76,19 +78,50 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Editorial Colophon / Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <div>
-                <p><strong>Student Peer-to-Peer Book Exchange System (Book4u)</strong></p>
-                <p style="font-size: 0.85rem; color: #64748b;">Phase 2: Authentication & Profile Management</p>
+            <div class="footer-brand">
+                <h4>Book4u</h4>
+                <p>An independent peer-to-peer student book exchange system built to liberate academic textbooks, eliminate retail markups, and foster scholarly solidarity across campus.</p>
             </div>
+
+            <div class="footer-col">
+                <h5>Navigation</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="explore.html">Explore Catalog</a></li>
+                    <li><a href="my-books.html">My Listed Volumes</a></li>
+                    <li><a href="profile.html">Student Profile</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Protocols</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#editorial">The Mission</a></li>
+                    <li><a href="index.html#categories">Subject Index</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Security &amp; Tech</h5>
+                <ul class="footer-links">
+                    <li><a href="api/health" target="_blank">Health &amp; Liveness</a></li>
+                    <li><a href="api/health/ready" target="_blank">DB Readiness</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>&copy; 2026 Book4u — Academic Edition. All peer exchanges are non-commercial.</div>
             <div class="footer-tech-stack">
-                <span class="tag">Java 21</span>
-                <span class="tag">PBKDF2WithHmacSHA256</span>
-                <span class="tag">Jakarta Servlet 6.0</span>
-                <span class="tag">JDBC</span>
-                <span class="tag">MySQL 8</span>
+                <span class="tech-tag">Java 21</span>
+                <span class="tech-tag">PBKDF2WithHmacSHA256</span>
+                <span class="tech-tag">Jakarta Servlet 6.0</span>
+                <span class="tech-tag">JDBC</span>
+                <span class="tech-tag">MySQL 8</span>
             </div>
         </div>
     </footer>

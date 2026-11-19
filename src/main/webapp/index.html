@@ -3,102 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book4u — Student Peer-to-Peer Book Exchange System</title>
-    <meta name="description" content="University peer-to-peer textbook sharing system supporting Swap, Giveaway, and Lending. Built with Java 21, Jakarta Servlets, JDBC, and MySQL.">
-    <!-- Stylesheet -->
+    <title>Book4u — Every Book Deserves Another Chapter</title>
+    <meta name="description" content="An editorial student-to-student academic book repository. Pass on the textbooks you've finished, find the ones waiting for you on campus with zero commercial fees.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+    <!-- Editorial Design System -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Navigation Header -->
+    <!-- 1. Editorial Navigation Header -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="brand-link">
-                <div class="brand-logo-icon">📚</div>
-                <div class="brand-details">
-                    <h1>Book4u</h1>
-                    <p>Student Peer-to-Peer Book Exchange</p>
-                </div>
+            <a href="index.html" class="brand-link" aria-label="Book4u Home">
+                <div class="brand-wordmark">Book<span>4u</span></div>
+                <div class="brand-label">Academic Exchange</div>
             </a>
+
+            <!-- Editorial Nav Links -->
+            <nav class="nav-menu" aria-label="Primary Navigation">
+                <li class="nav-item active"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="explore.html">Explore Books</a></li>
+                <li class="nav-item"><a href="#how-it-works">How It Works</a></li>
+                <li class="nav-item"><a href="#categories">Categories</a></li>
+                <li class="nav-item"><a href="#story">About</a></li>
+            </nav>
 
             <div class="nav-actions">
                 <!-- Live System Diagnostic Pill -->
-                <div id="system-health-pill" class="health-pill" title="Servlet & MySQL Health Status">
+                <div id="system-health-pill" class="health-pill" title="Tomcat & MySQL Health Status">
                     <span id="health-dot" class="health-dot dot-amber"></span>
                     <span id="health-text">Checking System...</span>
                 </div>
 
-                <!-- Navigation Links -->
-                <a href="explore.html" class="btn btn-outline btn-sm">Explore Books</a>
-                <a href="my-books.html" class="btn btn-outline btn-sm">My Books</a>
+                <!-- Guest Links (Dynamically swapped by auth.js upon session detection) -->
+                <a href="login.html" class="btn btn-ghost btn-sm guest-auth-btn">Login</a>
+                <a href="register.html" class="btn btn-outline btn-sm guest-auth-btn">Register</a>
 
-                <!-- Guest Login / Register (Replaced dynamically by auth.js when logged in) -->
-                <a href="login.html" class="btn btn-outline btn-sm guest-auth-btn">Sign In</a>
-                <a href="register.html" class="btn btn-primary btn-sm guest-auth-btn">Register</a>
-
-                <!-- Action Button -->
-                <button id="btn-open-list-modal" class="btn btn-primary btn-sm">+ List a Book</button>
+                <!-- Primary Action -->
+                <button id="btn-open-list-modal" class="btn btn-primary btn-sm">+ Share a Book</button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- Main Content -->
     <main class="main-content">
 
-        <!-- Hero Section -->
-        <section class="hero">
-            <p class="hero-tagline">Your Books • Your Campus • Your Community</p>
-            <h2 class="hero-title">Academic Book Sharing for University Students</h2>
-            <p class="hero-desc">
-                Exchange textbooks you've completed for books required in your current semester.
-                Zero cost, zero commercial sales — strictly student-to-student sharing on campus.
-            </p>
-        </section>
-
-        <!-- 3 Sharing Modes Highlights -->
-        <section class="modes-container">
-            <div class="mode-box">
-                <span class="mode-badge badge-swap">SWAP</span>
-                <h3>Book Exchange</h3>
-                <p>Trade a textbook you no longer need directly for one required for your coursework.</p>
-                <div class="mode-footer">Cost: $0 (Trade)</div>
+        <!-- 2. Cinematic Hero Section (Vasari VHS Hero Inspiration) -->
+        <section class="hero-section">
+            <div class="hero-meta-bar">
+                <div class="hero-accession-stamp">
+                    VOL. 26 // CAMPUS PEER-TO-PEER REPOSITORY
+                </div>
+                <div class="hero-badge-pill">
+                    100% NON-COMMERCIAL • $0 FEES
+                </div>
             </div>
 
-            <div class="mode-box">
-                <span class="mode-badge badge-giveaway">GIVEAWAY</span>
-                <h3>Altruistic Gifting</h3>
-                <p>Graduating students and seniors pass down reference books to juniors with zero return obligation.</p>
-                <div class="mode-footer">Cost: $0 (Free Gift)</div>
-            </div>
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Every Book Deserves<br>
+                        <em>Another Chapter.</em>
+                    </h1>
+                    <p class="hero-lead">
+                        Pass on the stories you've finished. Find the ones waiting for you.
+                        An independent peer-to-peer exchange connecting students across academic disciplines.
+                    </p>
 
-            <div class="mode-box">
-                <span class="mode-badge badge-lending">LENDING</span>
-                <h3>Time-Bound Loan</h3>
-                <p>Temporarily lend reference books or lab manuals with an agreed return calendar date.</p>
-                <div class="mode-footer">Cost: $0 (Borrow & Return)</div>
-            </div>
-        </section>
+                    <div class="hero-cta-group">
+                        <a href="explore.html" class="btn btn-primary btn-lg">Explore Books &rarr;</a>
+                        <button id="hero-btn-share" class="btn btn-outline btn-lg" onclick="document.getElementById('btn-open-list-modal').click()">Share a Book</button>
+                    </div>
 
-        <!-- Catalog Header & Filters -->
-        <section class="catalog-section">
-            <div class="catalog-header">
-                <div>
-                    <h3>Available Campus Textbooks</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted);">Loaded live from MySQL database via JDBC and Java Servlets</p>
+                    <div class="hero-features-strip">
+                        <div class="hero-feature-item">
+                            <span class="hero-feature-num">01 / MODE</span>
+                            <span class="hero-feature-label">Direct Swap</span>
+                        </div>
+                        <div class="hero-feature-item">
+                            <span class="hero-feature-num">02 / MODE</span>
+                            <span class="hero-feature-label">Free Giveaway</span>
+                        </div>
+                        <div class="hero-feature-item">
+                            <span class="hero-feature-num">03 / MODE</span>
+                            <span class="hero-feature-label">Term Lending</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="catalog-filters">
-                    <!-- Filter by Subject -->
-                    <select id="filter-subject" class="filter-select" aria-label="Filter by Subject">
+                <!-- Cinematic Composition Showcase -->
+                <div class="hero-visual">
+                    <div class="hero-frame">
+                        <div class="hero-frame-stamp">
+                            <span>ARCHIVE // ED. 2026</span>
+                            <span>CAMPUS LIBRARY REF. 402</span>
+                        </div>
+
+                        <div class="hero-book-stack">
+                            <!-- Background Layered Book 1 -->
+                            <div class="hero-book-card hero-book-bg1">
+                                <span class="hero-book-spine-accent">ALGORITHMS // CS-204</span>
+                                <h3 class="hero-book-title">Introduction to Algorithms</h3>
+                                <p class="hero-book-author">Cormen, Leiserson, Rivest</p>
+                                <div class="hero-book-bottom">
+                                    <span class="hero-book-mode">SWAP</span>
+                                </div>
+                            </div>
+
+                            <!-- Background Layered Book 2 -->
+                            <div class="hero-book-card hero-book-bg2">
+                                <span class="hero-book-spine-accent">SYSTEMS // CS-301</span>
+                                <h3 class="hero-book-title">Operating System Concepts</h3>
+                                <p class="hero-book-author">Silberschatz & Galvin</p>
+                                <div class="hero-book-bottom">
+                                    <span class="hero-book-mode">LENDING</span>
+                                </div>
+                            </div>
+
+                            <!-- Foreground Hero Book Jacket -->
+                            <div class="hero-book-card hero-book-main">
+                                <span class="hero-book-spine-accent">DATABASE // CS-208</span>
+                                <h3 class="hero-book-title">Database System Concepts</h3>
+                                <p class="hero-book-author">Silberschatz, Korth, Sudarshan</p>
+                                <div class="hero-book-bottom">
+                                    <span class="hero-book-mode">GIVEAWAY</span>
+                                    <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--color-olive-light);">CAMPUS ACCESSION #104</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-frame-stamp" style="border-bottom: none; border-top: 1px solid var(--color-grey); padding-top: 0.5rem; padding-bottom: 0;">
+                            <span>STATUS: LIVE REPOSITORY</span>
+                            <span>VERIFIED STUDENTS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Featured Book Experience (Card Story Inspiration) -->
+        <section id="featured-books" class="featured-section">
+            <div class="section-editorial-header">
+                <div>
+                    <div class="section-kicker">CURATED REPOSITORY // RECENT ARRIVALS</div>
+                    <h2 class="section-heading">Available Textbooks on Campus</h2>
+                    <p class="section-subtext">Directly from students in your university. Live catalog records loaded from our MySQL repository.</p>
+                </div>
+                <div>
+                    <a href="explore.html" class="btn btn-outline btn-sm">Full Catalog Index &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Filter Toolbar -->
+            <div class="filter-toolbar">
+                <div class="filter-pills">
+                    <button class="filter-pill active" onclick="filterByPill('')">All Volumes</button>
+                    <button class="filter-pill" onclick="filterByPill('Java')">Java</button>
+                    <button class="filter-pill" onclick="filterByPill('DBMS')">Database Systems</button>
+                    <button class="filter-pill" onclick="filterByPill('DSA')">Algorithms</button>
+                    <button class="filter-pill" onclick="filterByPill('Networks')">Networks</button>
+                </div>
+
+                <div class="filter-selects">
+                    <select id="filter-subject" class="filter-dropdown" aria-label="Filter by Subject">
                         <option value="">All Subjects</option>
-                        <option value="Java">Java</option>
-                        <option value="DBMS">DBMS</option>
-                        <option value="DSA">DSA</option>
-                        <option value="Networks">Networks</option>
+                        <option value="Java">Java Programming</option>
+                        <option value="DBMS">Database Management</option>
+                        <option value="DSA">Data Structures &amp; Algorithms</option>
+                        <option value="Networks">Computer Networks</option>
+                        <option value="Operating Systems">Operating Systems</option>
                     </select>
 
-                    <!-- Filter by Sharing Mode -->
-                    <select id="filter-mode" class="filter-select" aria-label="Filter by Sharing Mode">
+                    <select id="filter-mode" class="filter-dropdown" aria-label="Filter by Sharing Mode">
                         <option value="">All Modes</option>
                         <option value="SWAP">SWAP Only</option>
                         <option value="GIVEAWAY">GIVEAWAY Only</option>
@@ -107,9 +186,236 @@
                 </div>
             </div>
 
-            <!-- Dynamic Book Cards Grid -->
+            <!-- Dynamic Book Cards Grid (Populated via app.js) -->
             <div id="book-grid" class="book-grid">
                 <!-- Rendered dynamically by app.js -->
+            </div>
+        </section>
+
+        <!-- 4. Editorial Storytelling Section -->
+        <section id="story" class="story-section">
+            <div class="story-container">
+                <div class="story-left">
+                    <div class="section-kicker">EDITORIAL ESSAY // CAMPUS SOLIDARITY</div>
+                    <h2 class="story-heading">
+                        Good books shouldn't<br>
+                        <em>stay on one shelf.</em>
+                    </h2>
+                    <p class="story-prose">
+                        Every semester, thousands of authoritative textbooks sit dormant in student dormitories while junior peers in the next room pay retail for the exact same syllabus.
+                    </p>
+                    <div class="story-quote-block">
+                        "A university textbook is not a commercial product to be discarded after fifteen weeks. It is an intellectual tool meant to be passed down through cohorts."
+                    </div>
+                    <p class="story-prose">
+                        Book4u reclaims that intellectual capital. By removing commercial intermediaries, payment gates, and shipping friction, we enable students to exchange literature directly between classes.
+                    </p>
+                </div>
+
+                <div class="story-right">
+                    <div class="story-artifact-grid">
+                        <div class="story-artifact-card">
+                            <span class="story-artifact-num">01</span>
+                            <h3 class="story-artifact-title">The Term Swap</h3>
+                            <p class="story-artifact-text">Trade last semester's compiler design manual for the distributed systems handbook you need this week. Zero currency exchanged.</p>
+                        </div>
+                        <div class="story-artifact-card">
+                            <span class="story-artifact-num">02</span>
+                            <h3 class="story-artifact-title">Senior Legacy</h3>
+                            <p class="story-artifact-text">Graduating students gift foundational mathematics and physics texts to first-year undergraduates with no strings attached.</p>
+                        </div>
+                        <div class="story-artifact-card">
+                            <span class="story-artifact-num">03</span>
+                            <h3 class="story-artifact-title">Midterm Loans</h3>
+                            <p class="story-artifact-text">Borrow reference handbooks for three weeks during examination season, returning them safely before final grading.</p>
+                        </div>
+                        <div class="story-artifact-card">
+                            <span class="story-artifact-num">04</span>
+                            <h3 class="story-artifact-title">Campus Circle</h3>
+                            <p class="story-artifact-text">Handovers occur in common rooms, library lobbies, and faculty corridors. Real handshakes between verified campus peers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. How It Works -->
+        <section id="how-it-works" class="how-it-works-section">
+            <div class="section-editorial-header">
+                <div>
+                    <div class="section-kicker">SYSTEM PROTOCOL // THE EXCHANGE LIFECYCLE</div>
+                    <h2 class="section-heading">How the Exchange Works</h2>
+                    <p class="section-subtext">A simple, transparent three-step cycle designed for academic environments.</p>
+                </div>
+            </div>
+
+            <div class="steps-ledger">
+                <div class="step-item">
+                    <span class="step-num">STEP 01</span>
+                    <h3 class="step-title">List a book.</h3>
+                    <p class="step-desc">
+                        Catalog the textbooks you have completed. Note their physical condition, edition, course code, and your exchange preference: direct swap, free gift, or lending period.
+                    </p>
+                    <div class="step-annotation">[ CATALOGING TIME: &lt; 2 MINUTES ]</div>
+                </div>
+
+                <div class="step-item">
+                    <span class="step-num">STEP 02</span>
+                    <h3 class="step-title">Find your next read.</h3>
+                    <p class="step-desc">
+                        Filter campus inventory by course code, academic department, or subject. Review notes from previous student custodians and request the volume.
+                    </p>
+                    <div class="step-annotation">[ DIRECT CAMPUS SEARCH ]</div>
+                </div>
+
+                <div class="step-item">
+                    <span class="step-num">STEP 03</span>
+                    <h3 class="step-title">Exchange and keep the stories moving.</h3>
+                    <p class="step-desc">
+                        Coordinate a secure on-campus handover between lectures. Save hundreds of dollars every semester while keeping physical textbooks actively circulating.
+                    </p>
+                    <div class="step-annotation">[ ZERO SHIPPING • $0 FEES ]</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Browse Categories -->
+        <section id="categories" class="categories-section">
+            <div class="categories-container">
+                <div class="section-editorial-header">
+                    <div>
+                        <div class="section-kicker">DISCIPLINARY INDEX // ACADEMIC DISCIPLINES</div>
+                        <h2 class="section-heading">Browse by Academic Discipline</h2>
+                        <p class="section-subtext">Curated collections aligned directly with university undergraduate curricula.</p>
+                    </div>
+                </div>
+
+                <div class="category-index-grid">
+                    <a href="explore.html?subject=Java" class="category-card">
+                        <div class="category-card-top">
+                            <span class="category-code">DEPT // CS-101</span>
+                            <span class="category-arrow">&rarr;</span>
+                        </div>
+                        <div>
+                            <h3 class="category-name">Computer Science &amp; Java</h3>
+                            <p class="category-summary">Object-oriented paradigms, concurrency, Java Virtual Machine internals, and design patterns.</p>
+                        </div>
+                    </a>
+
+                    <a href="explore.html?subject=DBMS" class="category-card">
+                        <div class="category-card-top">
+                            <span class="category-code">DEPT // CS-208</span>
+                            <span class="category-arrow">&rarr;</span>
+                        </div>
+                        <div>
+                            <h3 class="category-name">Database Systems &amp; SQL</h3>
+                            <p class="category-summary">Relational schema design, transaction management, indexing algorithms, and MySQL architectures.</p>
+                        </div>
+                    </a>
+
+                    <a href="explore.html?subject=DSA" class="category-card">
+                        <div class="category-card-top">
+                            <span class="category-code">DEPT // CS-204</span>
+                            <span class="category-arrow">&rarr;</span>
+                        </div>
+                        <div>
+                            <h3 class="category-name">Data Structures &amp; Algorithms</h3>
+                            <p class="category-summary">Graph theory, dynamic programming, asymptotic analysis, and algorithmic problem-solving.</p>
+                        </div>
+                    </a>
+
+                    <a href="explore.html?subject=Networks" class="category-card">
+                        <div class="category-card-top">
+                            <span class="category-code">DEPT // CS-305</span>
+                            <span class="category-arrow">&rarr;</span>
+                        </div>
+                        <div>
+                            <h3 class="category-name">Computer Networks</h3>
+                            <p class="category-summary">TCP/IP protocol suites, socket programming, routing architectures, and campus security.</p>
+                        </div>
+                    </a>
+
+                    <a href="explore.html?subject=Operating%20Systems" class="category-card">
+                        <div class="category-card-top">
+                            <span class="category-code">DEPT // CS-301</span>
+                            <span class="category-arrow">&rarr;</span>
+                        </div>
+                        <div>
+                            <h3 class="category-name">Operating Systems</h3>
+                            <p class="category-summary">Kernel architecture, memory management, process synchronization, and Unix POSIX interfaces.</p>
+                        </div>
+                    </a>
+
+                    <a href="explore.html" class="category-card">
+                        <div class="category-card-top">
+                            <span class="category-code">DEPT // GENERAL</span>
+                            <span class="category-arrow">&rarr;</span>
+                        </div>
+                        <div>
+                            <h3 class="category-name">Mathematics &amp; Sciences</h3>
+                            <p class="category-summary">Discrete mathematics, probability, university physics, and engineering foundational texts.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Community Section (Genuine Live Metrics) -->
+        <section class="community-section">
+            <div class="ledger-box">
+                <div class="ledger-header">
+                    <div>
+                        <h3>Campus Ledger &amp; Repository Metrics</h3>
+                        <p>Real statistics verified live from our active student database</p>
+                    </div>
+                    <div>
+                        <span class="hero-badge-pill" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.25);">LIVE MYSQL 8.0 METRICS</span>
+                    </div>
+                </div>
+
+                <div class="ledger-stats-grid">
+                    <div class="ledger-stat-item">
+                        <span id="stat-books-count" class="ledger-stat-val">--</span>
+                        <span class="ledger-stat-label">Volumes Cataloged</span>
+                        <span class="ledger-stat-sub">Live MySQL database records</span>
+                    </div>
+
+                    <div class="ledger-stat-item">
+                        <span class="ledger-stat-val">3</span>
+                        <span class="ledger-stat-label">Sharing Modes</span>
+                        <span class="ledger-stat-sub">Swap, Giveaway &amp; Lending</span>
+                    </div>
+
+                    <div class="ledger-stat-item">
+                        <span class="ledger-stat-val">$0.00</span>
+                        <span class="ledger-stat-label">Commercial Cost</span>
+                        <span class="ledger-stat-sub">Strictly student-to-student</span>
+                    </div>
+
+                    <div class="ledger-stat-item">
+                        <span class="ledger-stat-val">100%</span>
+                        <span class="ledger-stat-label">Campus Handover</span>
+                        <span class="ledger-stat-sub">In-person verified exchange</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. Final Call to Action -->
+        <section class="final-cta-section">
+            <div class="final-cta-container">
+                <span class="final-cta-tag">THE INVITATION // JOIN YOUR CAMPUS PEERS</span>
+                <h2 class="final-cta-title">
+                    Your next favourite book<br>
+                    might be on <em>someone else's shelf.</em>
+                </h2>
+                <p class="final-cta-text">
+                    Join hundreds of students reducing textbook costs, sharing course knowledge, and keeping essential literature in active campus circulation.
+                </p>
+                <div class="final-cta-actions">
+                    <a href="explore.html" class="btn btn-primary btn-lg" style="background-color: var(--color-white); color: var(--color-ink); border-color: var(--color-white);">Find Your Next Book &rarr;</a>
+                    <button class="btn btn-outline btn-lg" style="color: var(--color-white); border-color: rgba(255,255,255,0.3);" onclick="document.getElementById('btn-open-list-modal').click()">List a Book Today</button>
+                </div>
             </div>
         </section>
 
@@ -119,7 +425,7 @@
     <div id="list-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modal-title">List an Academic Book</h2>
+                <h2 id="modal-title" class="modal-title">List an Academic Volume</h2>
                 <button id="btn-close-modal" class="modal-close" aria-label="Close modal">&times;</button>
             </div>
 
@@ -136,14 +442,14 @@
 
                 <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                     <div>
-                        <label for="book-subject-input">Subject *</label>
+                        <label for="book-subject-input">Subject Discipline *</label>
                         <select id="book-subject-input" class="form-control" required>
-                            <option value="Java">Java</option>
-                            <option value="DBMS">DBMS</option>
-                            <option value="DSA">DSA</option>
-                            <option value="Networks">Networks</option>
+                            <option value="Java">Java Programming</option>
+                            <option value="DBMS">Database Systems (DBMS)</option>
+                            <option value="DSA">Data Structures &amp; Algorithms</option>
+                            <option value="Networks">Computer Networks</option>
                             <option value="Operating Systems">Operating Systems</option>
-                            <option value="Other">Other</option>
+                            <option value="Other">Other Discipline</option>
                         </select>
                     </div>
                     <div>
@@ -154,27 +460,27 @@
 
                 <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                     <div>
-                        <label for="book-mode-select">Sharing Mode *</label>
+                        <label for="book-mode-select">Sharing Protocol *</label>
                         <select id="book-mode-select" class="form-control" required>
-                            <option value="SWAP">SWAP (Exchange)</option>
-                            <option value="GIVEAWAY">GIVEAWAY (Free)</option>
-                            <option value="LENDING">LENDING (Temporary)</option>
+                            <option value="SWAP">SWAP (Direct Trade)</option>
+                            <option value="GIVEAWAY">GIVEAWAY (Free Gift)</option>
+                            <option value="LENDING">LENDING (Time-Bound Loan)</option>
                         </select>
                     </div>
                     <div>
-                        <label for="book-condition-select">Condition *</label>
+                        <label for="book-condition-select">Condition Grade *</label>
                         <select id="book-condition-select" class="form-control" required>
-                            <option value="NEW">New</option>
-                            <option value="LIKE_NEW" selected>Like New</option>
-                            <option value="GOOD">Good</option>
-                            <option value="FAIR">Fair</option>
+                            <option value="NEW">New (Unmarked)</option>
+                            <option value="LIKE_NEW" selected>Like New (Minor Shelfwear)</option>
+                            <option value="GOOD">Good (Light Annotations)</option>
+                            <option value="FAIR">Fair (Noticeable Wear)</option>
                         </select>
                     </div>
                 </div>
 
                 <!-- Conditional Lending Duration -->
                 <div id="lending-duration-group" class="form-group" style="display: none;">
-                    <label for="book-days-input">Max Lending Duration (Days) *</label>
+                    <label for="book-days-input">Maximum Loan Period (Days) *</label>
                     <input type="number" id="book-days-input" class="form-control" min="1" max="180" placeholder="e.g. 30">
                 </div>
 
@@ -184,35 +490,68 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="book-desc-input">Description & Condition Notes</label>
+                    <label for="book-desc-input">Description &amp; Syllabus Notes</label>
                     <textarea id="book-desc-input" class="form-control" rows="3" placeholder="Pencil highlights, syllabus notes, CD included, etc."></textarea>
                 </div>
 
                 <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
-                    <button type="submit" class="btn btn-primary">Publish Listing</button>
+                    <button type="submit" class="btn btn-primary">Publish to Repository</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- 9. Editorial Colophon / Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <div>
-                <p><strong>Student Peer-to-Peer Book Exchange System (Book4u)</strong></p>
-                <p style="font-size: 0.85rem; color: #64748b;">University Academic Coursework Project</p>
+            <div class="footer-brand">
+                <h4>Book4u</h4>
+                <p>An independent peer-to-peer student book exchange system built to liberate academic textbooks, eliminate retail markups, and foster scholarly solidarity across campus.</p>
             </div>
+
+            <div class="footer-col">
+                <h5>Navigation</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="explore.html">Explore Catalog</a></li>
+                    <li><a href="my-books.html">My Listed Volumes</a></li>
+                    <li><a href="profile.html">Student Profile</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Protocols</h5>
+                <ul class="footer-links">
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#story">The Mission</a></li>
+                    <li><a href="#categories">Subject Index</a></li>
+                    <li><a href="api/health">Diagnostic Health</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Community</h5>
+                <ul class="footer-links">
+                    <li><a href="login.html">Student Sign In</a></li>
+                    <li><a href="register.html">Create Account</a></li>
+                    <li><a href="explore.html">Recent Arrivals</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Book4u — Student Peer-to-Peer Academic Book Exchange. All rights reserved.</p>
             <div class="footer-tech-stack">
-                <span class="tag">Java 21</span>
-                <span class="tag">Jakarta Servlet 6.0</span>
-                <span class="tag">Apache Tomcat 10.1</span>
-                <span class="tag">JDBC</span>
-                <span class="tag">MySQL 8.x</span>
+                <span class="tech-tag">Java 21</span>
+                <span class="tech-tag">Jakarta Servlet 6.0</span>
+                <span class="tech-tag">Apache Tomcat 10.1</span>
+                <span class="tech-tag">MySQL 8.0</span>
+                <span class="tech-tag">Pure JDBC</span>
             </div>
         </div>
     </footer>
 
-    <!-- Client Script -->
+    <!-- Client Scripts -->
     <script src="js/app.js"></script>
     <script src="js/auth.js"></script>
 </body>

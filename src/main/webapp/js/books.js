@@ -110,7 +110,7 @@ function renderExploreCards(books) {
             <div class="empty-state-box">
                 <span class="empty-state-icon">🔍</span>
                 <h3>No Textbooks Found</h3>
-                <p>No books match your current search query or filter criteria. Try adjusting keywords or clearing filters.</p>
+                <p>No volumes match your current search query or filter criteria. Try adjusting keywords or clearing filters.</p>
                 <button type="button" class="btn btn-outline" onclick="resetExploreFilters()">Reset All Filters</button>
             </div>
         `;
@@ -119,32 +119,57 @@ function renderExploreCards(books) {
 
     grid.innerHTML = '';
     books.forEach(book => {
-        const card = document.createElement('div');
+        const card = document.createElement('article');
         card.className = 'book-card';
 
-        const coverHtml = book.imageUrl
-            ? `<div class="book-cover-container"><img src="${escapeHtml(book.imageUrl)}" alt="${escapeHtml(book.title)}" class="book-cover-img" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'book-cover-placeholder\\'>📚 <span>${escapeHtml(book.subject)}</span></div>';"></div>`
-            : `<div class="book-cover-container"><div class="book-cover-placeholder">📚 <span>${escapeHtml(book.subject)}</span></div></div>`;
+        // Select an editorial jacket color theme based on subject
+        let themeClass = 'jacket-theme-cs';
+        const subj = (book.subject || '').toLowerCase();
+        if (subj.includes('db') || subj.includes('sql') || subj.includes('data')) {
+            themeClass = 'jacket-theme-dbms';
+        } else if (subj.includes('algo') || subj.includes('dsa') || subj.includes('structure')) {
+            themeClass = 'jacket-theme-algo';
+        } else if (subj.includes('math') || subj.includes('physics') || subj.includes('discrete')) {
+            themeClass = 'jacket-theme-math';
+        }
+
+        const hasCover = book.imageUrl && book.imageUrl.trim() !== '' && !book.imageUrl.includes('placeholder');
+        const jacketStyle = hasCover ? `background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('${escapeHtml(book.imageUrl)}');` : '';
 
         card.innerHTML = `
-            ${coverHtml}
+            <div class="book-jacket-plate ${themeClass}" style="${jacketStyle}">
+                <div class="book-jacket-subject-tag">${escapeHtml(book.subject || 'Academic Volume')}</div>
+                <div>
+                    <h4 class="book-jacket-title">${escapeHtml(book.title)}</h4>
+                    <p class="book-jacket-author">${escapeHtml(book.author)}</p>
+                </div>
+            </div>
+
             <div class="book-card-body">
-                <div class="book-header-line">
+                <div class="book-card-top">
                     <span class="mode-badge ${getModeBadgeClass(book.sharingMode)}">${escapeHtml(book.sharingMode)}</span>
                     <span class="status-pill ${getStatusBadgeClass(book.status)}">${escapeHtml(book.status)}</span>
                 </div>
 
                 <h3 class="book-title" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</h3>
-                <p class="book-author">By ${escapeHtml(book.author)}</p>
+                <p class="book-author">by ${escapeHtml(book.author)}</p>
 
-                <div class="book-meta-grid">
-                    <div><strong>Subject:</strong> ${escapeHtml(book.subject)}</div>
-                    <div><strong>Condition:</strong> <span class="badge-condition">${escapeHtml(book.conditionGrade)}</span></div>
-                    <div><strong>Edition:</strong> ${escapeHtml(book.edition || 'N/A')}</div>
-                    <div><strong>Owner:</strong> ${escapeHtml(book.ownerName || 'Student')}</div>
+                <div class="book-meta">
+                    <div class="book-meta-row">
+                        <span class="book-meta-label">Discipline:</span>
+                        <span class="book-meta-value">${escapeHtml(book.subject)}</span>
+                    </div>
+                    <div class="book-meta-row">
+                        <span class="book-meta-label">Condition:</span>
+                        <span class="book-meta-value">${escapeHtml(book.conditionGrade)}</span>
+                    </div>
+                    <div class="book-meta-row">
+                        <span class="book-meta-label">Custodian:</span>
+                        <span class="book-meta-value">${escapeHtml(book.ownerName || 'Verified Peer')}</span>
+                    </div>
                 </div>
 
-                ${book.description ? `<p class="book-desc-snippet">${escapeHtml(book.description)}</p>` : ''}
+                ${book.description ? `<p class="book-desc">${escapeHtml(book.description)}</p>` : ''}
 
                 <div class="book-card-actions">
                     <a href="${APP_CONTEXT}/book-details.html?id=${book.id}" class="btn btn-outline btn-sm">View Details</a>
@@ -239,8 +264,8 @@ function renderMyBooksCards(books) {
             <div class="empty-state-box">
                 <span class="empty-state-icon">📚</span>
                 <h3>No Listings Found</h3>
-                <p>You have not uploaded any textbooks under this category yet.</p>
-                <a href="${APP_CONTEXT}/add-book.html" class="btn btn-primary">+ List a Textbook</a>
+                <p>You have not offered any textbooks under this category yet.</p>
+                <a href="${APP_CONTEXT}/add-book.html" class="btn btn-primary">+ List a Volume</a>
             </div>
         `;
         return;
@@ -248,34 +273,60 @@ function renderMyBooksCards(books) {
 
     grid.innerHTML = '';
     books.forEach(book => {
-        const card = document.createElement('div');
+        const card = document.createElement('article');
         card.className = 'book-card';
 
-        const coverHtml = book.imageUrl
-            ? `<div class="book-cover-container"><img src="${escapeHtml(book.imageUrl)}" alt="${escapeHtml(book.title)}" class="book-cover-img" onerror="this.parentElement.innerHTML='<div class=\\'book-cover-placeholder\\'>📚 <span>${escapeHtml(book.subject)}</span></div>';"></div>`
-            : `<div class="book-cover-container"><div class="book-cover-placeholder">📚 <span>${escapeHtml(book.subject)}</span></div></div>`;
+        // Select an editorial jacket color theme based on subject
+        let themeClass = 'jacket-theme-cs';
+        const subj = (book.subject || '').toLowerCase();
+        if (subj.includes('db') || subj.includes('sql') || subj.includes('data')) {
+            themeClass = 'jacket-theme-dbms';
+        } else if (subj.includes('algo') || subj.includes('dsa') || subj.includes('structure')) {
+            themeClass = 'jacket-theme-algo';
+        } else if (subj.includes('math') || subj.includes('physics') || subj.includes('discrete')) {
+            themeClass = 'jacket-theme-math';
+        }
+
+        const hasCover = book.imageUrl && book.imageUrl.trim() !== '' && !book.imageUrl.includes('placeholder');
+        const jacketStyle = hasCover ? `background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('${escapeHtml(book.imageUrl)}');` : '';
 
         card.innerHTML = `
-            ${coverHtml}
+            <div class="book-jacket-plate ${themeClass}" style="${jacketStyle}">
+                <div class="book-jacket-subject-tag">${escapeHtml(book.subject || 'Academic Volume')}</div>
+                <div>
+                    <h4 class="book-jacket-title">${escapeHtml(book.title)}</h4>
+                    <p class="book-jacket-author">${escapeHtml(book.author)}</p>
+                </div>
+            </div>
+
             <div class="book-card-body">
-                <div class="book-header-line">
+                <div class="book-card-top">
                     <span class="mode-badge ${getModeBadgeClass(book.sharingMode)}">${escapeHtml(book.sharingMode)}</span>
                     <span class="status-pill ${getStatusBadgeClass(book.status)}">${escapeHtml(book.status)}</span>
                 </div>
 
                 <h3 class="book-title" title="${escapeHtml(book.title)}">${escapeHtml(book.title)}</h3>
-                <p class="book-author">By ${escapeHtml(book.author)}</p>
+                <p class="book-author">by ${escapeHtml(book.author)}</p>
 
-                <div class="book-meta-grid">
-                    <div><strong>Subject:</strong> ${escapeHtml(book.subject)}</div>
-                    <div><strong>Condition:</strong> <span class="badge-condition">${escapeHtml(book.conditionGrade)}</span></div>
-                    <div><strong>Listed:</strong> ${book.createdAt ? new Date(book.createdAt).toLocaleDateString() : '--'}</div>
+                <div class="book-meta">
+                    <div class="book-meta-row">
+                        <span class="book-meta-label">Discipline:</span>
+                        <span class="book-meta-value">${escapeHtml(book.subject)}</span>
+                    </div>
+                    <div class="book-meta-row">
+                        <span class="book-meta-label">Condition:</span>
+                        <span class="book-meta-value">${escapeHtml(book.conditionGrade)}</span>
+                    </div>
+                    <div class="book-meta-row">
+                        <span class="book-meta-label">Listed:</span>
+                        <span class="book-meta-value">${book.createdAt ? new Date(book.createdAt).toLocaleDateString() : '--'}</span>
+                    </div>
                 </div>
 
                 <div class="book-card-actions">
                     <a href="${APP_CONTEXT}/book-details.html?id=${book.id}" class="btn btn-outline btn-sm">View</a>
-                    <a href="${APP_CONTEXT}/edit-book.html?id=${book.id}" class="btn btn-outline btn-sm" style="color: var(--primary-color);">✏️ Edit</a>
-                    <button type="button" class="btn btn-outline btn-sm" style="color: var(--danger-color); border-color: #fca5a5;" onclick="confirmDeleteBook(${book.id}, '${escapeHtml(book.title)}')">🗑️ Delete</button>
+                    <a href="${APP_CONTEXT}/edit-book.html?id=${book.id}" class="btn btn-outline btn-sm" style="color: var(--color-forest);">Edit</a>
+                    <button type="button" class="btn btn-outline btn-sm" style="color: var(--color-accent-terracotta); border-color: rgba(164, 74, 63, 0.3);" onclick="confirmDeleteBook(${book.id}, '${escapeHtml(book.title)}')">Delete</button>
                 </div>
             </div>
         `;
@@ -567,30 +618,40 @@ async function initBookDetailsPage() {
         const isOwner = data.isOwner;
         const canRequest = data.canRequest;
 
-        // Visual Cover
+        // Visual Cover or Editorial Jacket Plate
+        let themeClass = 'jacket-theme-cs';
+        const subj = (book.subject || '').toLowerCase();
+        if (subj.includes('db') || subj.includes('sql') || subj.includes('data')) {
+            themeClass = 'jacket-theme-dbms';
+        } else if (subj.includes('algo') || subj.includes('dsa') || subj.includes('structure')) {
+            themeClass = 'jacket-theme-algo';
+        } else if (subj.includes('math') || subj.includes('physics') || subj.includes('discrete')) {
+            themeClass = 'jacket-theme-math';
+        }
+
         const coverHtml = book.imageUrl
-            ? `<img src="${escapeHtml(book.imageUrl)}" alt="${escapeHtml(book.title)}" class="details-cover" onerror="this.outerHTML='<div class=\\'details-cover-fallback\\'>📚 <span>${escapeHtml(book.subject)}</span></div>';">`
-            : `<div class="details-cover-fallback">📚 <span>${escapeHtml(book.subject)}</span></div>`;
+            ? `<img src="${escapeHtml(book.imageUrl)}" alt="${escapeHtml(book.title)}" class="details-cover" onerror="this.outerHTML='<div class=\\'book-jacket-plate ${themeClass}\\' style=\\'height: 260px; margin-bottom: 1.5rem;\\'><div class=\\'book-jacket-subject-tag\\'>${escapeHtml(book.subject)}</div><div><h4 class=\\'book-jacket-title\\'>${escapeHtml(book.title)}</h4><p class=\\'book-jacket-author\\'>${escapeHtml(book.author)}</p></div></div>';">`
+            : `<div class="book-jacket-plate ${themeClass}" style="height: 260px; margin-bottom: 1.5rem;"><div class="book-jacket-subject-tag">${escapeHtml(book.subject || 'Academic Volume')}</div><div><h4 class="book-jacket-title">${escapeHtml(book.title)}</h4><p class="book-jacket-author">${escapeHtml(book.author)}</p></div></div>`;
 
         // Action Buttons
         let actionButtonsHtml = '';
         if (isOwner) {
             actionButtonsHtml = `
                 <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
-                    <a href="${APP_CONTEXT}/edit-book.html?id=${book.id}" class="btn btn-primary" style="flex: 1;">✏️ Edit Listing</a>
-                    <button type="button" class="btn btn-outline" style="color: var(--danger-color); border-color: #fca5a5;" onclick="confirmDeleteBook(${book.id}, '${escapeHtml(book.title)}')">🗑️ Delete</button>
+                    <a href="${APP_CONTEXT}/edit-book.html?id=${book.id}" class="btn btn-primary" style="flex: 1;">Edit Listing</a>
+                    <button type="button" class="btn btn-outline" style="color: var(--color-accent-terracotta); border-color: rgba(164,74,63,0.3);" onclick="confirmDeleteBook(${book.id}, '${escapeHtml(book.title)}')">Delete</button>
                 </div>
             `;
         } else if (canRequest) {
             actionButtonsHtml = `
                 <button type="button" id="btn-request-exchange" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 0.85rem;" onclick="handleRequestExchangeNotice(${book.id}, '${escapeHtml(book.title)}')">
-                    🤝 Request Exchange (${escapeHtml(book.sharingMode)})
+                    Request Exchange (${escapeHtml(book.sharingMode)})
                 </button>
             `;
         } else if (!isOwner && book.status !== 'AVAILABLE') {
             actionButtonsHtml = `
-                <div style="margin-top: 1.5rem; padding: 0.85rem; background-color: #f1f5f9; border-radius: var(--radius-md); text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-                    🔒 This textbook is currently <strong>${escapeHtml(book.status)}</strong> and unavailable for new exchange requests.
+                <div style="margin-top: 1.5rem; padding: 0.85rem; background-color: var(--color-paper-dark); border-radius: var(--radius-sm); text-align: center; color: var(--color-ink-muted); font-size: 0.88rem;">
+                    This textbook is currently <strong>${escapeHtml(book.status)}</strong> and unavailable for new exchange requests.
                 </div>
             `;
         }
@@ -598,9 +659,9 @@ async function initBookDetailsPage() {
         let lendingTermHtml = '';
         if (book.sharingMode === 'LENDING' && book.lendingMaxDurationDays) {
             lendingTermHtml = `
-                <div style="background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-md); padding: 1rem; margin-top: 1.25rem;">
-                    <strong style="color: #1e40af;">⏱️ Lending Terms:</strong>
-                    <p style="color: #1e3a8a; font-size: 0.9rem; margin-top: 0.25rem;">Maximum loan duration: <strong>${book.lendingMaxDurationDays} Days</strong>. Book must be returned to the owner before this deadline.</p>
+                <div style="background-color: var(--color-accent-blue-light); border: 1px solid rgba(42, 77, 105, 0.25); border-radius: var(--radius-sm); padding: 1.25rem; margin-top: 1.5rem;">
+                    <strong style="color: var(--color-accent-blue); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;">Lending Terms:</strong>
+                    <p style="color: var(--color-ink); font-size: 0.92rem; margin-top: 0.35rem;">Maximum loan duration: <strong>${book.lendingMaxDurationDays} Days</strong>. Volume must be returned to the custodian before this deadline.</p>
                 </div>
             `;
         }
@@ -608,9 +669,9 @@ async function initBookDetailsPage() {
         let swapPrefHtml = '';
         if (book.sharingMode === 'SWAP' && book.swapPreferences) {
             swapPrefHtml = `
-                <div style="background-color: #f5f3ff; border: 1px solid #ddd6fe; border-radius: var(--radius-md); padding: 1rem; margin-top: 1.25rem;">
-                    <strong style="color: #6d28d9;">🔄 Owner's Swap Preferences:</strong>
-                    <p style="color: #5b21b6; font-size: 0.9rem; margin-top: 0.25rem;">${escapeHtml(book.swapPreferences)}</p>
+                <div style="background-color: var(--color-paper-light); border: 1px solid var(--color-grey); border-radius: var(--radius-sm); padding: 1.25rem; margin-top: 1.5rem;">
+                    <strong style="color: var(--color-forest); font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;">Custodian Trade Preferences:</strong>
+                    <p style="color: var(--color-ink); font-size: 0.92rem; margin-top: 0.35rem;">${escapeHtml(book.swapPreferences)}</p>
                 </div>
             `;
         }
@@ -627,9 +688,9 @@ async function initBookDetailsPage() {
 
             <div class="profile-tab-card">
                 <div class="tab-card-header">
-                    <span style="font-size: 0.85rem; color: var(--primary-color); font-weight: 700; text-transform: uppercase;">${escapeHtml(book.subject)}</span>
-                    <h2 style="font-size: 1.8rem; color: var(--text-dark); margin: 0.25rem 0 0.5rem 0;">${escapeHtml(book.title)}</h2>
-                    <p style="font-size: 1.05rem; color: var(--text-muted);">By <strong>${escapeHtml(book.author)}</strong></p>
+                    <div class="editorial-tag" style="color: var(--color-forest); margin-bottom: 0.35rem;">ACCESSION RECORD // ${escapeHtml(book.subject)}</div>
+                    <h1 style="font-family: var(--font-serif); font-size: 2.2rem; color: var(--color-ink); line-height: 1.15; margin: 0.25rem 0 0.5rem 0;">${escapeHtml(book.title)}</h1>
+                    <p style="font-size: 1.1rem; color: var(--color-ink-muted); font-style: italic;">By <strong>${escapeHtml(book.author)}</strong></p>
                 </div>
 
                 <!-- Specifications Grid -->
@@ -653,9 +714,9 @@ async function initBookDetailsPage() {
                 </div>
 
                 <!-- Description -->
-                <div style="margin-top: 1.5rem;">
-                    <h4 style="font-size: 1rem; color: var(--text-dark); margin-bottom: 0.5rem;">📖 Description & Condition Notes</h4>
-                    <p style="color: #334155; line-height: 1.7; font-size: 0.95rem;">${escapeHtml(book.description || 'No additional condition notes provided by owner.')}</p>
+                <div style="margin-top: 1.75rem;">
+                    <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--color-ink); margin-bottom: 0.5rem;">Syllabus Notes &amp; Physical Condition</h4>
+                    <p style="color: var(--color-ink-muted); line-height: 1.7; font-size: 0.95rem;">${escapeHtml(book.description || 'No additional condition notes provided by owner.')}</p>
                 </div>
 
                 ${lendingTermHtml}
@@ -667,16 +728,17 @@ async function initBookDetailsPage() {
                         ${book.ownerName ? book.ownerName.charAt(0).toUpperCase() : 'S'}
                     </div>
                     <div>
-                        <div style="font-size: 0.78rem; color: #166534; font-weight: 700; text-transform: uppercase;">Listed by Peer Student</div>
-                        <div style="font-size: 1.05rem; font-weight: 700; color: #14532d;">${escapeHtml(book.ownerName || 'Verified Campus Student')}</div>
-                        <div style="font-size: 0.82rem; color: #15803d;">${escapeHtml(book.ownerDepartment || 'Academic Department')} • ${escapeHtml(book.ownerCampus || 'Main Campus')}</div>
+                        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-forest); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;">Verified Campus Custodian</div>
+                        <div style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--color-ink);">${escapeHtml(book.ownerName || 'Verified Campus Student')}</div>
+                        <div style="font-size: 0.84rem; color: var(--color-ink-muted);">${escapeHtml(book.ownerDepartment || 'Academic Department')} • ${escapeHtml(book.ownerCampus || 'Main Campus')}</div>
                     </div>
                 </div>
 
-                <div style="font-size: 0.8rem; color: var(--text-muted); text-align: right; margin-top: 1.5rem;">
-                    Listed on ${book.createdAt ? new Date(book.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '--'}
+                <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-ink-faint); text-align: right; margin-top: 1.5rem;">
+                    CATALOGED ON ${book.createdAt ? new Date(book.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase() : '--'}
                 </div>
             </div>
+        `;
         `;
 
         if (params.get('action') === 'request' && canRequest) {

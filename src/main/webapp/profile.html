@@ -3,30 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Profile & Settings — Book4u</title>
+    <title>Student Custodian Profile — Book4u</title>
     <meta name="description" content="Manage your Book4u university student profile and account credentials.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+    <!-- Editorial Design System -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Navigation Header -->
+    <!-- Editorial Navigation Header -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="brand-link">
-                <div class="brand-logo-icon">📚</div>
-                <div class="brand-details">
-                    <h1>Book4u</h1>
-                    <p>Student Peer-to-Peer Book Exchange</p>
-                </div>
+            <a href="index.html" class="brand-link" aria-label="Book4u Home">
+                <div class="brand-wordmark">Book<span>4u</span></div>
+                <div class="brand-label">Academic Exchange</div>
             </a>
 
+            <nav class="nav-menu" aria-label="Primary Navigation">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="explore.html">Explore Books</a></li>
+                <li class="nav-item"><a href="my-books.html">My Listed Volumes</a></li>
+                <li class="nav-item active"><a href="profile.html">Student Profile</a></li>
+            </nav>
+
             <div class="nav-actions">
-                <div id="system-health-pill" class="health-pill" title="Servlet & MySQL Health Status">
+                <div id="system-health-pill" class="health-pill" title="Tomcat & MySQL Health Status">
                     <span id="health-dot" class="health-dot dot-amber"></span>
                     <span id="health-text">Checking System...</span>
                 </div>
-                <a href="index.html" class="btn btn-outline btn-sm">Explore Books</a>
-                <button type="button" class="btn btn-danger btn-sm" onclick="logoutStudent()">Sign Out</button>
+                <a href="explore.html" class="btn btn-outline btn-sm">Explore Books</a>
+                <button type="button" class="btn btn-outline btn-sm" style="color: var(--color-accent-terracotta); border-color: rgba(164,74,63,0.3);" onclick="logoutStudent()">Sign Out</button>
             </div>
         </div>
     </header>
@@ -35,7 +44,7 @@
     <main class="main-content">
         <div class="profile-container">
 
-            <!-- Left Sidebar: Student Identity Card -->
+            <!-- Left Column: Student Identity Card -->
             <aside class="profile-card">
                 <div class="student-avatar" id="avatar-initials">--</div>
 
@@ -63,13 +72,13 @@
                         <span class="value" id="card-phone">Not specified</span>
                     </div>
                     <div class="profile-detail-row">
-                        <span class="label">Joined:</span>
+                        <span class="label">Enrolled:</span>
                         <span class="value" id="card-created-at">--</span>
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-outline" style="width: 100%; margin-top: 1.5rem; color: var(--danger-color); border-color: #fca5a5;" onclick="logoutStudent()">
-                    🚪 Sign Out
+                <button type="button" class="btn btn-outline" style="width: 100%; margin-top: 1.75rem; color: var(--color-accent-terracotta); border-color: rgba(164,74,63,0.3);" onclick="logoutStudent()">
+                    Sign Out
                 </button>
             </aside>
 
@@ -79,7 +88,8 @@
                 <!-- Section 1: Edit Profile Information -->
                 <section class="profile-tab-card">
                     <div class="tab-card-header">
-                        <h3>👤 Edit Profile Details</h3>
+                        <div class="editorial-tag" style="color: var(--color-forest); margin-bottom: 0.35rem;">CAMPUS DOSSIER</div>
+                        <h3>Edit Profile Details</h3>
                         <p>Update your display name, contact phone, department, and academic semester.</p>
                     </div>
 
@@ -91,13 +101,13 @@
                         <div class="form-grid-2">
                             <div class="form-group">
                                 <label for="prof-univ-id">University ID (Institutional Identifier)</label>
-                                <input type="text" id="prof-univ-id" class="form-control" style="background-color: #f1f5f9; cursor: not-allowed;" readonly disabled>
+                                <input type="text" id="prof-univ-id" class="form-control" style="background-color: var(--color-paper-dark); cursor: not-allowed;" readonly disabled>
                                 <div class="form-hint">🔒 Managed by university registrar; cannot be changed</div>
                             </div>
 
                             <div class="form-group">
                                 <label for="prof-email">College Email Address</label>
-                                <input type="email" id="prof-email" class="form-control" style="background-color: #f1f5f9; cursor: not-allowed;" readonly disabled>
+                                <input type="email" id="prof-email" class="form-control" style="background-color: var(--color-paper-dark); cursor: not-allowed;" readonly disabled>
                                 <div class="form-hint">🔒 Bound to verified campus credentials</div>
                             </div>
                         </div>
@@ -120,14 +130,14 @@
                             <div class="form-group">
                                 <label for="prof-dept">Academic Department *</label>
                                 <select id="prof-dept" class="form-control" required>
-                                    <option value="Computer Science">Computer Science & Engineering</option>
-                                    <option value="Information Science">Information Science & Engineering</option>
-                                    <option value="Electronics & Communication">Electronics & Communication</option>
-                                    <option value="Electrical Engineering">Electrical & Electronics</option>
+                                    <option value="Computer Science">Computer Science &amp; Engineering</option>
+                                    <option value="Information Science">Information Science &amp; Engineering</option>
+                                    <option value="Electronics & Communication">Electronics &amp; Communication</option>
+                                    <option value="Electrical Engineering">Electrical &amp; Electronics</option>
                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
                                     <option value="Civil Engineering">Civil Engineering</option>
                                     <option value="Biotechnology">Biotechnology</option>
-                                    <option value="Mathematics & Sciences">Mathematics & Basic Sciences</option>
+                                    <option value="Mathematics & Sciences">Mathematics &amp; Basic Sciences</option>
                                     <option value="Business & Management">Management Studies</option>
                                 </select>
                             </div>
@@ -168,7 +178,8 @@
                 <!-- Section 2: Change Password Securely -->
                 <section class="profile-tab-card">
                     <div class="tab-card-header">
-                        <h3>🔑 Change Password</h3>
+                        <div class="editorial-tag" style="color: var(--color-forest); margin-bottom: 0.35rem;">CREDENTIAL SECURITY</div>
+                        <h3>Change Password</h3>
                         <p>Protect your account by creating a new strong password (hashed with PBKDF2WithHmacSHA256).</p>
                     </div>
 
@@ -219,19 +230,50 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Editorial Colophon / Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <div>
-                <p><strong>Student Peer-to-Peer Book Exchange System (Book4u)</strong></p>
-                <p style="font-size: 0.85rem; color: #64748b;">Phase 2: Authentication & Profile Management</p>
+            <div class="footer-brand">
+                <h4>Book4u</h4>
+                <p>An independent peer-to-peer student book exchange system built to liberate academic textbooks, eliminate retail markups, and foster scholarly solidarity across campus.</p>
             </div>
+
+            <div class="footer-col">
+                <h5>Navigation</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="explore.html">Explore Catalog</a></li>
+                    <li><a href="my-books.html">My Listed Volumes</a></li>
+                    <li><a href="profile.html">Student Profile</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Protocols</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#editorial">The Mission</a></li>
+                    <li><a href="index.html#categories">Subject Index</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Security &amp; Tech</h5>
+                <ul class="footer-links">
+                    <li><a href="api/health" target="_blank">Health &amp; Liveness</a></li>
+                    <li><a href="api/health/ready" target="_blank">DB Readiness</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>&copy; 2026 Book4u — Academic Edition. All peer exchanges are non-commercial.</div>
             <div class="footer-tech-stack">
-                <span class="tag">Java 21</span>
-                <span class="tag">PBKDF2WithHmacSHA256</span>
-                <span class="tag">Jakarta Servlet 6.0</span>
-                <span class="tag">JDBC</span>
-                <span class="tag">MySQL 8</span>
+                <span class="tech-tag">Java 21</span>
+                <span class="tech-tag">PBKDF2WithHmacSHA256</span>
+                <span class="tech-tag">Jakarta Servlet 6.0</span>
+                <span class="tech-tag">JDBC</span>
+                <span class="tech-tag">MySQL 8</span>
             </div>
         </div>
     </footer>

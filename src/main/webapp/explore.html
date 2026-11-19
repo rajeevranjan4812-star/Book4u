@@ -3,101 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore Textbooks — Book4u</title>
-    <meta name="description" content="Discover textbooks offered by university peers for swap, giveaway, and temporary lending on campus.">
+    <title>Explore Academic Textbooks — Book4u</title>
+    <meta name="description" content="Discover textbooks offered by university peers for swap, giveaway, and temporary lending on campus with zero commercial markup.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
+    <!-- Editorial Design System -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Navigation Header -->
+    <!-- Editorial Navigation Header -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="brand-link">
-                <div class="brand-logo-icon">📚</div>
-                <div class="brand-details">
-                    <h1>Book4u</h1>
-                    <p>Student Peer-to-Peer Book Exchange</p>
-                </div>
+            <a href="index.html" class="brand-link" aria-label="Book4u Home">
+                <div class="brand-wordmark">Book<span>4u</span></div>
+                <div class="brand-label">Academic Exchange</div>
             </a>
 
+            <nav class="nav-menu" aria-label="Primary Navigation">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item active"><a href="explore.html">Explore Books</a></li>
+                <li class="nav-item"><a href="index.html#how-it-works">How It Works</a></li>
+                <li class="nav-item"><a href="index.html#categories">Categories</a></li>
+                <li class="nav-item"><a href="my-books.html">My Listed Volumes</a></li>
+            </nav>
+
             <div class="nav-actions">
-                <div id="system-health-pill" class="health-pill" title="Servlet & MySQL Health Status">
+                <div id="system-health-pill" class="health-pill" title="Tomcat & MySQL Health Status">
                     <span id="health-dot" class="health-dot dot-amber"></span>
                     <span id="health-text">Checking System...</span>
                 </div>
 
-                <a href="explore.html" class="btn btn-outline btn-sm" style="font-weight: 700; color: var(--primary-color);">Explore</a>
-                <a href="my-books.html" class="btn btn-outline btn-sm">My Books</a>
-                <a href="add-book.html" class="btn btn-primary btn-sm">+ List a Book</a>
-
-                <a href="login.html" class="btn btn-outline btn-sm guest-auth-btn">Sign In</a>
-                <a href="register.html" class="btn btn-primary btn-sm guest-auth-btn">Register</a>
+                <a href="login.html" class="btn btn-ghost btn-sm guest-auth-btn">Login</a>
+                <a href="register.html" class="btn btn-outline btn-sm guest-auth-btn">Register</a>
+                <a href="add-book.html" class="btn btn-primary btn-sm">+ Share a Book</a>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="main-content">
-        <div class="catalog-container">
+        <div style="max-width: var(--max-width); margin: 0 auto; padding: 4rem 2rem 6rem;">
 
-            <!-- Banner Header -->
-            <div class="catalog-header">
-                <h2>Campus Textbook Discovery</h2>
-                <p>Browse books shared by fellow students across your university. Exchange for required semester textbooks or borrow exam preparation copies for $0 cost.</p>
+            <!-- Editorial Catalog Header -->
+            <div style="margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: var(--border-hairline);">
+                <div class="editorial-tag" style="margin-bottom: 0.5rem; color: var(--color-forest);">
+                    CAMPUS ACCESSION REPOSITORY // ACADEMIC CATALOG
+                </div>
+                <h1 style="font-family: var(--font-serif); font-size: var(--fs-h1); color: var(--color-ink); line-height: 1.1; letter-spacing: -0.03em;">
+                    Explore Campus Textbooks
+                </h1>
+                <p style="font-size: 1.1rem; color: var(--color-ink-muted); max-width: 58ch; margin-top: 0.75rem;">
+                    Browse volumes listed by students across university departments. Direct peer-to-peer swaps, senior giveaways, and examination loans — zero fees.
+                </p>
             </div>
 
             <!-- Search and Multi-Criteria Filtering Box -->
-            <div class="search-box-card">
+            <div style="background-color: var(--color-white); border: var(--border-hairline); border-radius: var(--radius-sm); padding: 2rem; margin-bottom: 3rem; box-shadow: var(--shadow-card);">
                 <form id="search-filter-form" novalidate>
                     <!-- Search Bar -->
-                    <div class="search-input-group">
-                        <div class="search-input-wrapper">
-                            <span class="search-icon-inside">🔍</span>
-                            <input type="text" id="search-query" class="form-control" placeholder="Search by title, author, subject, or ISBN...">
-                        </div>
-                        <button type="submit" class="btn btn-primary" style="padding: 0 1.5rem; height: 48px;">
+                    <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
+                        <input type="text" id="search-query" class="form-control" placeholder="Search by title, author, course code, or syllabus subject..." style="font-size: 1rem; padding: 0.85rem 1.15rem;">
+                        <button type="submit" class="btn btn-primary" style="padding: 0 1.75rem;">
                             Search
                         </button>
                     </div>
 
                     <!-- Filter Dropdowns Row -->
-                    <div class="filter-controls-row">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) 140px; gap: 1rem; align-items: flex-end;">
                         <div>
-                            <label for="filter-subject" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Subject Area</label>
+                            <label for="filter-subject" style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--color-ink-faint); display: block; margin-bottom: 0.4rem;">Subject Discipline</label>
                             <select id="filter-subject" class="form-control">
                                 <option value="ALL">All Subjects</option>
-                                <option value="Java">Java & Object-Oriented</option>
+                                <option value="Java">Java &amp; OOP</option>
                                 <option value="DBMS">Database Systems (DBMS)</option>
-                                <option value="DSA">Data Structures & Algorithms</option>
+                                <option value="DSA">Data Structures &amp; Algorithms</option>
                                 <option value="Networks">Computer Networks</option>
                                 <option value="Operating Systems">Operating Systems</option>
-                                <option value="Mathematics">Mathematics & Discrete Math</option>
-                                <option value="Electronics">Electronics & Circuits</option>
+                                <option value="Mathematics">Mathematics &amp; Discrete Math</option>
+                                <option value="Electronics">Electronics &amp; Circuits</option>
                             </select>
                         </div>
 
                         <div>
-                            <label for="filter-condition" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Condition</label>
+                            <label for="filter-condition" style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--color-ink-faint); display: block; margin-bottom: 0.4rem;">Condition Grade</label>
                             <select id="filter-condition" class="form-control">
                                 <option value="ALL">All Conditions</option>
                                 <option value="LIKE_NEW">Like New</option>
-                                <option value="GOOD">Good</option>
-                                <option value="FAIR">Fair</option>
+                                <option value="GOOD">Good (Light Notes)</option>
+                                <option value="FAIR">Fair (Annotated)</option>
                             </select>
                         </div>
 
                         <div>
-                            <label for="filter-mode" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Sharing Mode</label>
+                            <label for="filter-mode" style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--color-ink-faint); display: block; margin-bottom: 0.4rem;">Exchange Protocol</label>
                             <select id="filter-mode" class="form-control">
                                 <option value="ALL">All Modes</option>
-                                <option value="SWAP">SWAP (Exchange)</option>
-                                <option value="GIVEAWAY">GIVEAWAY (Free)</option>
-                                <option value="LENDING">LENDING (Temporary)</option>
+                                <option value="SWAP">SWAP (Direct Trade)</option>
+                                <option value="GIVEAWAY">GIVEAWAY (Free Gift)</option>
+                                <option value="LENDING">LENDING (Temporary Loan)</option>
                             </select>
                         </div>
 
-                        <div style="align-self: flex-end;">
-                            <button type="button" id="btn-clear-filters" class="btn btn-outline" style="height: 40px; width: 100%;">
+                        <div>
+                            <button type="button" id="btn-clear-filters" class="btn btn-outline" style="width: 100%; padding: 0.65rem 0;">
                                 Clear Filters
                             </button>
                         </div>
@@ -105,32 +116,69 @@
                 </form>
             </div>
 
-            <!-- Results Meta Line -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                <h3 style="font-size: 1.2rem; color: var(--text-dark);">Available Textbooks</h3>
-                <span id="catalog-count" style="font-size: 0.9rem; color: var(--text-muted); font-weight: 600;">Loading catalog...</span>
+            <!-- Results Meta Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2rem; padding-bottom: 0.75rem; border-bottom: var(--border-hairline);">
+                <h2 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--color-ink); font-weight: 400;">
+                    Repository Catalog
+                </h2>
+                <span id="catalog-count" style="font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-forest); font-weight: 600;">
+                    Loading catalog records...
+                </span>
             </div>
 
-            <!-- Dynamic Book Grid -->
+            <!-- Dynamic Book Grid (Rendered by books.js) -->
             <div id="explore-book-grid" class="book-grid">
-                <!-- Rendered dynamically by books.js -->
+                <!-- Populated dynamically by books.js -->
             </div>
 
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Editorial Colophon / Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <div>
-                <p><strong>Student Peer-to-Peer Book Exchange System (Book4u)</strong></p>
-                <p style="font-size: 0.85rem; color: #64748b;">Phase 3: Book Management & Discovery</p>
+            <div class="footer-brand">
+                <h4>Book4u</h4>
+                <p>An independent peer-to-peer student book exchange system built to liberate academic textbooks, eliminate retail markups, and foster scholarly solidarity across campus.</p>
             </div>
+
+            <div class="footer-col">
+                <h5>Navigation</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="explore.html">Explore Catalog</a></li>
+                    <li><a href="my-books.html">My Listed Volumes</a></li>
+                    <li><a href="profile.html">Student Profile</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Protocols</h5>
+                <ul class="footer-links">
+                    <li><a href="index.html#how-it-works">How It Works</a></li>
+                    <li><a href="index.html#story">The Mission</a></li>
+                    <li><a href="index.html#categories">Subject Index</a></li>
+                    <li><a href="api/health">Diagnostic Health</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Community</h5>
+                <ul class="footer-links">
+                    <li><a href="login.html">Student Sign In</a></li>
+                    <li><a href="register.html">Create Account</a></li>
+                    <li><a href="explore.html">Recent Arrivals</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Book4u — Student Peer-to-Peer Academic Book Exchange. All rights reserved.</p>
             <div class="footer-tech-stack">
-                <span class="tag">Java 21</span>
-                <span class="tag">Jakarta Servlet 6.0</span>
-                <span class="tag">JDBC</span>
-                <span class="tag">MySQL 8</span>
+                <span class="tech-tag">Java 21</span>
+                <span class="tech-tag">Jakarta Servlet 6.0</span>
+                <span class="tech-tag">Apache Tomcat 10.1</span>
+                <span class="tech-tag">MySQL 8.0</span>
             </div>
         </div>
     </footer>
